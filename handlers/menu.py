@@ -1,4 +1,3 @@
-import asyncio
 from aiogram import Router, F
 from aiogram.types import Message, CallbackQuery
 from aiogram.fsm.state import default_state
@@ -10,8 +9,7 @@ from lexicon.lexicon import (
     LEXICON_MENU,
     LEXICON_COURSES,
     LEXICON_ABOUT,
-    LEXICON_PROJECTS,
-    LEXICON_TRANSITIONS
+    LEXICON_PROJECTS
 )
 
 # Создаём роутер
@@ -92,3 +90,4 @@ async def back_to_courses(callback: CallbackQuery):
     )
 
     await callback.answer()
+

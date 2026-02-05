@@ -1,5 +1,4 @@
 import asyncio
-import logging
 
 from aiogram import Bot, Dispatcher
 from aiogram.fsm.storage.memory import MemoryStorage
@@ -12,6 +11,7 @@ from handlers.menu import router as menu_router
 from handlers.signup import router as signup_router
 from keyboards.bot_commands import set_main_menu
 
+
 async def main():
     config = load_config()
 
@@ -19,7 +19,7 @@ async def main():
     bot = Bot(
         token=config.bot.token,
         default=DefaultBotProperties(
-            parse_mode=ParseMode.HTML  # HTML разметка по умолчанию
+            parse_mode=ParseMode.HTML
         )
     )
 
@@ -39,6 +39,7 @@ async def main():
 
     # ===== ЗАПУСК POLLING =====
     await dp.start_polling(bot)
+
 
 if __name__ == "__main__":
     # Запускаем асинхронную функцию

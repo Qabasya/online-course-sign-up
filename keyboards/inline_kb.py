@@ -50,3 +50,4 @@ def get_course_detail_keyboard(course_id: str) -> InlineKeyboardMarkup:
     builder.adjust(1)
 
     return builder.as_markup()
+

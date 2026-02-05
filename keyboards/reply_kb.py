@@ -82,3 +82,4 @@ def get_cancel_keyboard() -> ReplyKeyboardMarkup:
     )
 
     return keyboard
+

@@ -19,3 +19,4 @@ class SignUpStates(StatesGroup):
 
     # Шаг 3: Ждём контактные данные (номер телефона)
     waiting_for_contact = State()
+

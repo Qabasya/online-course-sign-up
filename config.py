@@ -39,3 +39,4 @@ def load_config(path: str | None = None) -> Config:
             password=env('DB_PASSWORD')
         )
     )
+

@@ -47,7 +47,7 @@ async def cmd_start_reset(message: Message, state: FSMContext):
     await state.clear()
 
     await message.answer(
-        text="🔄 Возвращаемся в главное меню...\n\n" + LEXICON_START, #todo разнести в разные сообщения
+        text="🔄 Возвращаемся в главное меню...\n\n" + LEXICON_START,
         reply_markup=get_main_menu_keyboard()
     )
 
