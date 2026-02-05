@@ -6,6 +6,8 @@ from aiogram.enums import ParseMode
 
 from config import load_config
 from handlers.start import router as start_router
+from handlers.menu import router as menu_router
+from keyboards.bot_commands import set_main_menu
 
 
 async def main():
@@ -24,6 +26,11 @@ async def main():
 
     # ===== ПОДКЛЮЧЕНИЕ РОУТЕРОВ =====
     dp.include_router(start_router)  # 1. Команды /start, /help
+
+    dp.include_router(menu_router)  # 3. Общие хендлеры меню
+
+    # ===== КНОПКИ МЕНЮ С КОМАНДАМИ =====
+    await set_main_menu(bot)
 
     # ===== ЗАПУСК POLLING =====
     await dp.start_polling(bot)
