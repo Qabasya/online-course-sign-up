@@ -50,17 +50,3 @@ def get_course_detail_keyboard(course_id: str) -> InlineKeyboardMarkup:
     builder.adjust(1)
 
     return builder.as_markup()
-
-def get_back_to_menu_keyboard() -> InlineKeyboardMarkup:
-    """
-        Кнопка возврата в главное меню.
-    """
-    builder = InlineKeyboardBuilder()
-
-    # Добавляем кнопки по одной в ряд (каждая в новом ряду)
-    builder.button(
-        text=LEXICON_MENU['back'],
-        callback_data=f"back_to_menu"
-    )
-
-    return builder.as_markup()

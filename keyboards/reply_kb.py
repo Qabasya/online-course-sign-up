@@ -82,8 +82,3 @@ def get_cancel_keyboard() -> ReplyKeyboardMarkup:
     )
 
     return keyboard
-
-
-# Объект для удаления клавиатуры
-# Используется когда нужно убрать Reply клавиатуру
-remove_keyboard = ReplyKeyboardRemove()
