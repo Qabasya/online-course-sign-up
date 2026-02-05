@@ -4,7 +4,7 @@ from aiogram.types import (
     ReplyKeyboardRemove
 )
 
-from lexicon.lexicon import LEXICON_MENU, LEXICON_BUTTONS
+from lexicon.lexicon import LEXICON_MENU
 
 
 def get_main_menu_keyboard() -> ReplyKeyboardMarkup:
@@ -38,52 +38,3 @@ def get_main_menu_keyboard() -> ReplyKeyboardMarkup:
     )
 
     return keyboard
-
-
-def get_contact_keyboard() -> ReplyKeyboardMarkup:
-    """
-    Клавиатура для запроса контакта пользователя.
-
-    request_contact=True - при нажатии отправляет номер телефона.
-    Работает только если пользователь привязал номер к Telegram.
-    """
-
-    # Кнопка отправки контакта (специальная)
-    button_contact = KeyboardButton(
-        text=LEXICON_BUTTONS['send_contact'],
-        request_contact=True
-    )
-
-    # Кнопка отмены (обычная)
-    button_cancel = KeyboardButton(text=LEXICON_BUTTONS['cancel'])
-
-    keyboard = ReplyKeyboardMarkup(
-        keyboard=[
-            [button_contact], [button_cancel]
-        ],
-        resize_keyboard=True,
-        one_time_keyboard=True
-    )
-
-    return keyboard
-
-
-def get_cancel_keyboard() -> ReplyKeyboardMarkup:
-    """
-    Клавиатура только с кнопкой отмены.
-    Используется во время заполнения формы.
-    """
-
-    button_cancel = KeyboardButton(text=LEXICON_BUTTONS['cancel'])
-
-    keyboard = ReplyKeyboardMarkup(
-        keyboard=[[button_cancel]],
-        resize_keyboard=True
-    )
-
-    return keyboard
-
-
-# Объект для удаления клавиатуры
-# Используется когда нужно убрать Reply клавиатуру
-remove_keyboard = ReplyKeyboardRemove()
