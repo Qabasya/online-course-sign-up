@@ -1,7 +1,7 @@
 from aiogram.types import InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-from lexicon.lexicon import LEXICON_BUTTONS, LEXICON_MENU
+from lexicon.lexicon import LEXICON_BUTTONS
 
 
 def get_courses_keyboard() -> InlineKeyboardMarkup:
