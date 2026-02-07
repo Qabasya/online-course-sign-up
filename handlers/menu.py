@@ -1,10 +1,10 @@
 from aiogram import Router, F
-from aiogram.types import Message, CallbackQuery
-from aiogram.fsm.state import default_state
 from aiogram.filters import StateFilter
+from aiogram.fsm.state import default_state
+from aiogram.types import Message, CallbackQuery
 
-from keyboards.reply_kb import get_main_menu_keyboard
 from keyboards.inline_kb import get_courses_keyboard, get_course_detail_keyboard
+from keyboards.reply_kb import get_main_menu_keyboard
 from lexicon.lexicon import (
     LEXICON_MENU,
     LEXICON_COURSES,

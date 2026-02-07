@@ -1,19 +1,20 @@
 from datetime import datetime
+
 from aiogram import Router, F, Bot
-from aiogram.types import Message, CallbackQuery
 from aiogram.filters import Command, StateFilter
 from aiogram.fsm.context import FSMContext
-from aiogram.fsm.state import default_state
+from aiogram.types import Message, CallbackQuery
 
-from states.signup import SignUpStates
+from config import load_config
 from keyboards.reply_kb import (
     get_contact_keyboard,
     get_cancel_keyboard,
     get_main_menu_keyboard
 )
-from keyboards.inline_kb import get_courses_keyboard
 from lexicon.lexicon import LEXICON_SIGNUP, LEXICON_ADMIN, COURSES_INFO, LEXICON_BUTTONS
-from config import load_config
+from states.signup import SignUpStates
+
+from services.database import add_client
 
 # Загружаем конфиг и достаём ID администратора
 config = load_config()
@@ -177,12 +178,25 @@ async def process_contact(message: Message, state: FSMContext, bot: Bot):
 
     # Получаем номер телефона из контакта
     phone = message.contact.phone_number
+    user_id = message.from_user.id
+    username = message.from_user.username
 
     # Сохраняем телефон
     await state.update_data(phone=phone)
 
     # Получаем ВСЕ собранные данные
     data = await state.get_data()
+
+    # --- СОХРАНЕНИЕ В БАЗУ ДАННЫХ ---
+    add_client(
+        course=data['course_name'],
+        school=data['class_school'],
+        name=data['name'],
+        phone=phone,
+        user_id=user_id,
+        username= username
+    )
+    # --------------------------------
 
     # Формируем сообщение об успехе
     success_text = LEXICON_SIGNUP['success'].format(

@@ -1,12 +1,11 @@
 from aiogram import Router
 from aiogram.filters import Command, CommandStart, StateFilter
-from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import default_state
+from aiogram.types import Message
 
 from keyboards.reply_kb import get_main_menu_keyboard
 from lexicon.lexicon import LEXICON_START, LEXICON_HELP
-
 
 # Создаём роутер для этого модуля
 router = Router(name='start_router')

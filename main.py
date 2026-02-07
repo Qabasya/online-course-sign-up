@@ -11,6 +11,7 @@ from handlers.menu import router as menu_router
 from handlers.signup import router as signup_router
 from keyboards.bot_commands import set_main_menu
 
+from services.database import init_db
 
 async def main():
     config = load_config()
@@ -42,5 +43,7 @@ async def main():
 
 
 if __name__ == "__main__":
+    # Создаём базу
+    init_db()
     # Запускаем асинхронную функцию
     asyncio.run(main())
