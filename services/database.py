@@ -1,5 +1,5 @@
 # Работа с базой данных
-import  sqlite3
+import  aiosqlite
 
 DB_NAME = 'sign_up_bot.db'
 DB_PATH = f'db/{DB_NAME}'
@@ -14,7 +14,7 @@ DB_PATH = f'db/{DB_NAME}'
 # date -> дата добавления записи
 #==                      ==#
 
-def init_db() -> None:
+async def init_db() -> None:
     """
     Создание таблицы clients в базе DB_NAME
     Время и дата всё равно сохраняются строкой
@@ -23,7 +23,7 @@ def init_db() -> None:
 
     :return: None
     """
-    with sqlite3.connect(DB_PATH) as conn:
+    async with aiosqlite.connect(DB_PATH) as conn:
         cursor = conn.cursor()
         cursor.execute('''
         CREATE TABLE IF NOT EXISTS clients (
@@ -50,7 +50,7 @@ async def add_client(course:str, school:str, name:str, phone:str, user_id:int, u
     :param username: username, при наличии
     :return: None
     """
-    async with sqlite3.connect(DB_PATH) as conn:
+    async with aiosqlite.connect(DB_PATH) as conn:
         cursor = conn.cursor()
         if username is None:
             username = 'нет username'
