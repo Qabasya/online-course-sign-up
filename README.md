@@ -2,7 +2,6 @@
 
 [![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://python.org)
 [![aiogram](https://img.shields.io/badge/aiogram-3.4+-blue.svg)](https://docs.aiogram.dev/)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 Обучающий проект Telegram-бота для записи на курсы программирования. Мини-проект к теме 25
 
@@ -78,5 +77,5 @@ course_bot/
 | `master`    | Шаблон проекта    |
 | `stage-...` | Разбивка на этапы |
 | `final`     | Итоговый проект (последняя актуальная версия)  |
-
+| `theme-26.` | Работа с базой данных |
 
