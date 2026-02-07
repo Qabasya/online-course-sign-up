@@ -172,7 +172,6 @@ async def process_contact(message: Message, state: FSMContext, bot: Bot):
     - last_name: фамилия (может быть None)
     - user_id: ID пользователя
     """
-    print("До контакта")
     # Получаем номер телефона из контакта
     phone = message.contact.phone_number
     user_id = message.from_user.id
@@ -183,7 +182,6 @@ async def process_contact(message: Message, state: FSMContext, bot: Bot):
 
     # Получаем ВСЕ собранные данные
     data = await state.get_data()
-    print("До сохранения")
     # --- СОХРАНЕНИЕ В БАЗУ ДАННЫХ ---
     await add_client(
         course=data['course_name'],
@@ -194,7 +192,6 @@ async def process_contact(message: Message, state: FSMContext, bot: Bot):
         username=username
     )
     # --------------------------------
-    print("До сообщения")
     # Формируем сообщение об успехе
     success_text = LEXICON_SIGNUP['success'].format(
         course=data['course_name'],
