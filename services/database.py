@@ -17,6 +17,10 @@ DB_PATH = f'db/{DB_NAME}'
 def init_db() -> None:
     """
     Создание таблицы clients в базе DB_NAME
+    Время и дата всё равно сохраняются строкой
+    Преобразовать эту строку в объект time можно так:
+    datetime.strptime(reg_date, "%Y-%m-%d %H:%M:%S")
+
     :return: None
     """
     with sqlite3.connect(DB_PATH) as conn:
