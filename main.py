@@ -14,6 +14,9 @@ from services.database import init_db
 
 
 async def main():
+    # Создаём базу
+    await init_db()
+
     config = load_config()
 
     # ===== СОЗДАНИЕ БОТА =====
@@ -43,7 +46,6 @@ async def main():
 
 
 if __name__ == "__main__":
-    # Создаём базу
-    init_db()
+
     # Запускаем асинхронную функцию
     asyncio.run(main())
