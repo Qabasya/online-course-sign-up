@@ -35,7 +35,7 @@ def init_db() -> None:
         ''')
         conn.commit()
 
-def add_client(course:str, school:str, name:str, phone:str, user_id:int, username=None )->None:
+async def add_client(course:str, school:str, name:str, phone:str, user_id:int, username=None )->None:
     """
     Добавление новой записи в таблицу clients
     :param course: выбранное направление
@@ -46,7 +46,7 @@ def add_client(course:str, school:str, name:str, phone:str, user_id:int, usernam
     :param username: username, при наличии
     :return: None
     """
-    with sqlite3.connect(DB_PATH) as conn:
+    async with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
         if username is None:
             username = 'нет username'

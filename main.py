@@ -1,17 +1,17 @@
 import asyncio
 
 from aiogram import Bot, Dispatcher
-from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
+from aiogram.fsm.storage.memory import MemoryStorage
 
 from config import load_config
-from handlers.start import router as start_router
 from handlers.menu import router as menu_router
 from handlers.signup import router as signup_router
+from handlers.start import router as start_router
 from keyboards.bot_commands import set_main_menu
-
 from services.database import init_db
+
 
 async def main():
     config = load_config()

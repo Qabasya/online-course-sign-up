@@ -12,9 +12,8 @@ from keyboards.reply_kb import (
     get_main_menu_keyboard
 )
 from lexicon.lexicon import LEXICON_SIGNUP, LEXICON_ADMIN, COURSES_INFO, LEXICON_BUTTONS
-from states.signup import SignUpStates
-
 from services.database import add_client
+from states.signup import SignUpStates
 
 # Загружаем конфиг и достаём ID администратора
 config = load_config()
@@ -88,8 +87,6 @@ async def cmd_cancel(message: Message, state: FSMContext):
     Отменяет регистрацию из любого состояния.
     """
     await cancel_signup(message, state)
-
-
 
 
 # ===== ШАГ 1: КЛАСС И ШКОЛА =====
@@ -188,13 +185,13 @@ async def process_contact(message: Message, state: FSMContext, bot: Bot):
     data = await state.get_data()
 
     # --- СОХРАНЕНИЕ В БАЗУ ДАННЫХ ---
-    add_client(
+    await add_client(
         course=data['course_name'],
         school=data['class_school'],
         name=data['name'],
         phone=phone,
         user_id=user_id,
-        username= username
+        username=username
     )
     # --------------------------------
 
@@ -227,7 +224,6 @@ async def process_contact(message: Message, state: FSMContext, bot: Bot):
         chat_id=ADMIN_ID,
         text=admin_text,
     )
-
 
     # Очищаем состояние и данные
     await state.clear()
