@@ -6,6 +6,7 @@ from aiogram.types import Message
 
 from keyboards.reply_kb import get_main_menu_keyboard
 from lexicon.lexicon import LEXICON_START, LEXICON_HELP
+from utils.messages import send_message
 
 # Создаём роутер для этого модуля
 router = Router(name='start_router')
@@ -23,12 +24,7 @@ async def cmd_start(message: Message):
     Это важно! Если пользователь заполняет форму и нажмёт /start,
     этот хендлер НЕ сработает (нужен другой хендлер для сброса)
     """
-
-    await message.answer(
-        text=LEXICON_START,
-        reply_markup=get_main_menu_keyboard()
-    )
-
+    await send_message(message, text=LEXICON_START, reply_markup=get_main_menu_keyboard())
 
 @router.message(CommandStart())
 async def cmd_start_reset(message: Message, state: FSMContext):
@@ -44,11 +40,8 @@ async def cmd_start_reset(message: Message, state: FSMContext):
 
     # Сбрасываем состояние и очищаем данные
     await state.clear()
+    await send_message(message, text=LEXICON_START, reply_markup=get_main_menu_keyboard())
 
-    await message.answer(
-        text="🔄 Возвращаемся в главное меню...\n\n" + LEXICON_START,
-        reply_markup=get_main_menu_keyboard()
-    )
 
 
 @router.message(Command("help"))
@@ -56,4 +49,4 @@ async def cmd_help(message: Message):
     """
     Обработчик команды /help.
     """
-    await message.answer(text=LEXICON_HELP)
+    await send_message(message, text=LEXICON_HELP)

@@ -3,6 +3,7 @@ import asyncio
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
+from aiogram.exceptions import TelegramNetworkError
 from aiogram.fsm.storage.memory import MemoryStorage
 
 from config import load_config
@@ -39,13 +40,26 @@ async def main():
     dp.include_router(menu_router)  # 3. Общие хендлеры меню
 
     # ===== КНОПКИ МЕНЮ С КОМАНДАМИ =====
-    await set_main_menu(bot)
+    try:
+        await set_main_menu(bot)
+    except TelegramNetworkError as e:
+        print(f"Ошибка сети в установке меню: {e}")
+        print(type(e))
+        return
+    except Exception as e:
+        print(f"Не удалось установить меню: {e}")
 
     # ===== ЗАПУСК POLLING =====
-    await dp.start_polling(bot)
-
+    try:
+        await dp.start_polling(bot)
+    except TelegramNetworkError as e:
+        print(f"Ошибка сети в pulling: {e}")
+    except Exception as e:
+        print(f"Критическая ошибка polling: {e}")
 
 if __name__ == "__main__":
-
     # Запускаем асинхронную функцию
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+    except TelegramNetworkError as e:
+        print(f"Ошибка сети в main: {e}")

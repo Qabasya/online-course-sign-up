@@ -14,6 +14,7 @@ from keyboards.reply_kb import (
 from lexicon.lexicon import LEXICON_SIGNUP, LEXICON_ADMIN, COURSES_INFO, LEXICON_BUTTONS
 from services.database import add_client
 from states.signup import SignUpStates
+from utils.messages import send_message
 
 # Загружаем конфиг и достаём ID администратора
 config = load_config()
@@ -46,12 +47,8 @@ async def start_signup(callback: CallbackQuery, state: FSMContext):
     await callback.message.delete()
 
     # Отправляем первый вопрос
-    await callback.message.answer(
-        text=LEXICON_SIGNUP['start'] + "\n" + LEXICON_SIGNUP['ask_class'],
-        reply_markup=get_cancel_keyboard()  # Показываем кнопку отмены
-    )
-
-    await callback.answer()
+    await send_message(callback, text=LEXICON_SIGNUP['start'] + "\n" + LEXICON_SIGNUP['ask_class'],
+                       reply_markup=get_cancel_keyboard())
 
 
 # ===== ОТМЕНА РЕГИСТРАЦИИ =====
@@ -65,19 +62,12 @@ async def cancel_signup(message: Message, state: FSMContext):
 
     if current_state is None:
         # Если и так нет состояния
-        await message.answer(
-            text="Нечего отменять 🤷‍♂️",
-            reply_markup=get_main_menu_keyboard()
-        )
+        await send_message(message, text=LEXICON_SIGNUP['no_cancel'], reply_markup=get_main_menu_keyboard())
         return
 
     # Очищаем состояние и данные
     await state.clear()
-
-    await message.answer(
-        text=LEXICON_SIGNUP['cancel'],
-        reply_markup=get_main_menu_keyboard()
-    )
+    await send_message(message, text=LEXICON_SIGNUP['cancel'], reply_markup=get_main_menu_keyboard())
 
 
 @router.message(Command("cancel"))
@@ -107,10 +97,7 @@ async def process_class(message: Message, state: FSMContext):
 
     # Простая валидация (можно добавить проверку формата)
     if len(message.text) < 3:
-        await message.answer(
-            text=LEXICON_SIGNUP['invalid_input'],
-            parse_mode="HTML"
-        )
+        await send_message(message, text=LEXICON_SIGNUP['invalid_input'])
         return
 
     # Сохраняем данные
@@ -120,10 +107,7 @@ async def process_class(message: Message, state: FSMContext):
     await state.set_state(SignUpStates.waiting_for_name)
 
     # Отправляем следующий вопрос
-    await message.answer(
-        text=LEXICON_SIGNUP['ask_name'],
-        reply_markup=get_cancel_keyboard()
-    )
+    await send_message(message, text=LEXICON_SIGNUP['ask_name'], reply_markup=get_cancel_keyboard())
 
 
 # ===== ШАГ 2: ФИО =====
@@ -141,9 +125,7 @@ async def process_name(message: Message, state: FSMContext):
 
     # Валидация ФИО (минимум 2 символа, есть пробелы)
     if len(message.text) < 2 or " " not in message.text:
-        await message.answer(
-            text="⚠️ Пожалуйста, введите полное ФИО (Фамилия Имя Отчество)"
-        )
+        await send_message(message, text=LEXICON_SIGNUP['no_name'], reply_markup=get_cancel_keyboard())
         return
 
     # Сохраняем ФИО
@@ -153,10 +135,7 @@ async def process_name(message: Message, state: FSMContext):
     await state.set_state(SignUpStates.waiting_for_contact)
 
     # Запрашиваем контакт
-    await message.answer(
-        text=LEXICON_SIGNUP['ask_contact'],
-        reply_markup=get_contact_keyboard()  # Клавиатура с кнопкой контакта
-    )
+    await send_message(message, text=LEXICON_SIGNUP['ask_contact'], reply_markup=get_contact_keyboard())
 
 
 # ===== ШАГ 3: КОНТАКТ =====
@@ -201,10 +180,7 @@ async def process_contact(message: Message, state: FSMContext, bot: Bot):
     )
 
     # Отправляем подтверждение пользователю
-    await message.answer(
-        text=success_text,
-        reply_markup=get_main_menu_keyboard()  # Возвращаем главное меню
-    )
+    await send_message(message, text=success_text, reply_markup=get_main_menu_keyboard())
 
     # ===== ОТПРАВКА ЗАЯВКИ АДМИНУ =====
     admin_text = LEXICON_ADMIN.format(
@@ -237,10 +213,7 @@ async def process_contact_text(message: Message, state: FSMContext):
         await cancel_signup(message, state)
         return
 
-    await message.answer(
-        text="⚠️ Пожалуйста, нажмите кнопку «📱 Отправить контакт» для отправки номера телефона.",
-        reply_markup=get_contact_keyboard()
-    )
+    await send_message(message, text=LEXICON_SIGNUP['get_contact'], reply_markup=get_contact_keyboard())
 
 
 # ===== ФИЛЬТР ЛЮБЫХ СООБЩЕНИЙ В СОСТОЯНИИ =====
@@ -254,7 +227,4 @@ async def unknown_message_in_state(message: Message):
     Этот хендлер должен быть ПОСЛЕДНИМ, чтобы ловить только то,
     что не поймали другие хендлеры.
     """
-
-    await message.answer(
-        text="⚠️ Пожалуйста, следуйте инструкциям или используйте /cancel для отмены."
-    )
+    await send_message(message, text=LEXICON_SIGNUP['invalid_message'])

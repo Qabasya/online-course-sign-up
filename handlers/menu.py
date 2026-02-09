@@ -12,6 +12,8 @@ from lexicon.lexicon import (
     LEXICON_PROJECTS
 )
 
+from utils.messages import send_message
+
 # Создаём роутер
 router = Router(name='menu_router')
 
@@ -28,10 +30,7 @@ async def show_courses(message: Message):
     """
 
     # Отправляем список курсов с Inline клавиатурой
-    await message.answer(
-        text=LEXICON_COURSES['select'],
-        reply_markup=get_courses_keyboard()
-    )
+    await send_message(message, text=LEXICON_COURSES['select'], reply_markup=get_courses_keyboard())
 
 
 # О нас
@@ -41,10 +40,7 @@ async def show_about(message: Message):
     Обработчик кнопки "О нас".
     """
     # Информация о школе (без inline кнопок, просто текст)
-    await message.answer(
-        text=LEXICON_ABOUT,
-        reply_markup=get_main_menu_keyboard()
-    )
+    await send_message(message, text=LEXICON_ABOUT, reply_markup=get_main_menu_keyboard())
 
 
 # Проекты
@@ -53,10 +49,7 @@ async def show_projects(message: Message):
     """
     Обработчик кнопки "Примеры проектов".
     """
-    await message.answer(
-        text=LEXICON_PROJECTS,
-        reply_markup=get_main_menu_keyboard()
-    )
+    await send_message(message, text=LEXICON_PROJECTS, reply_markup=get_main_menu_keyboard())
 
 
 # ===== INLINE КНОПКИ ВЫБОРА КУРСА =====
@@ -71,10 +64,7 @@ async def show_course_detail(callback: CallbackQuery):
     course_text = LEXICON_COURSES.get(course_id)
 
     # Редактируем сообщение (заменяем текст и клавиатуру)
-    await callback.message.edit_text(
-        text=course_text,
-        reply_markup=get_course_detail_keyboard(course_id)
-    )
+    await send_message(callback, text=course_text, reply_markup=get_course_detail_keyboard(course_id))
 
     await callback.answer()
 
@@ -84,10 +74,7 @@ async def back_to_courses(callback: CallbackQuery):
     """
     Кнопка "Назад к списку курсов".
     """
-    await callback.message.edit_text(
-        text=LEXICON_COURSES['select'],
-        reply_markup=get_courses_keyboard()
-    )
+
+    await send_message(callback, text=LEXICON_COURSES['select'], reply_markup=get_courses_keyboard())
 
     await callback.answer()
-
