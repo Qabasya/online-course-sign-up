@@ -1,0 +1,76 @@
+version: 1
+disable_existing_loggers: False
+
+formatters:
+  default:
+    format: "{levelname}: {message}"
+    style: "{"
+
+  detailed:
+    format: "[{asctime}] #{levelname:<8} {filename}:{lineno} - {name} - {message}"
+    style: "{"
+
+  simple:
+    format: "{asctime} - {levelname} - {message}"
+    datefmt: "%H:%M:%S"
+    style: "{"
+
+filters:
+  warning_only:
+    (): filters.WarningOnlyFilter
+  error_only:
+    (): filters.ErrorOnlyFilter
+  critical_only:
+    (): filters.CriticalOnlyFilter
+  info_only:
+    (): filters.InfoOnlyFilter
+
+handlers:
+  console_info:
+    class: logging.StreamHandler
+    stream: ext://sys.stdout
+    formatter: default
+    filters: [info_only]
+
+  console_stderr:
+    class: logging.StreamHandler
+    stream: ext://sys.stderr
+    formatter: simple
+    level: WARNING
+
+  file_warning:
+    class: logging.FileHandler
+    filename: logs/warning.log
+    formatter: simple
+    filters: [warning_only]
+    encoding: utf-8
+
+  file_errors:
+    class: logging.FileHandler
+    filename: logs/errors.log
+    formatter: detailed
+    filters: [error_only]
+    encoding: utf-8
+
+  file_critical:
+    class: logging.FileHandler
+    filename: logs/critical.log
+    formatter: detailed
+    filters: [critical_only]
+    encoding: utf-8
+
+# Если надоели логи aiogram
+loggers:
+  aiogram:
+    level: WARNING  # только варнинги
+    handlers: [console_stderr] # Ошибки пойдут в stderr
+    propagate: False
+
+root:
+  level: DEBUG
+  handlers:
+    - console_info
+    - console_stderr
+    - file_warning
+    - file_errors
+    - file_critical

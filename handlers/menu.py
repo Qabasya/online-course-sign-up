@@ -74,7 +74,6 @@ async def back_to_courses(callback: CallbackQuery):
     """
     Кнопка "Назад к списку курсов".
     """
-
     await send_message(callback, text=LEXICON_COURSES['select'], reply_markup=get_courses_keyboard())
 
     await callback.answer()

@@ -1,5 +1,7 @@
 import asyncio
+import logging.config
 
+import yaml
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
@@ -13,10 +15,19 @@ from handlers.start import router as start_router
 from keyboards.bot_commands import set_main_menu
 from services.database import init_db
 
+with open('logging_config.yaml', 'rt') as f:
+    config = yaml.safe_load(f.read())
+
+logging.config.dictConfig(config)
+
+logger = logging.getLogger(__name__)
+logger.info('Бот запускается...')
+
 
 async def main():
-    # Создаём базу
+    logger.info("Инициализация базы данных...")
     await init_db()
+    logger.info("База данных готова")
 
     config = load_config()
 
@@ -43,23 +54,24 @@ async def main():
     try:
         await set_main_menu(bot)
     except TelegramNetworkError as e:
-        print(f"Ошибка сети в установке меню: {e}")
-        print(type(e))
+        logger.warning(f"Ошибка сети в установке меню: {e}")
+        logger.debug("Тип ошибки: %s", type(e))
         return
     except Exception as e:
-        print(f"Не удалось установить меню: {e}")
+        logger.critical(f"Не удалось установить меню: {e}")
 
     # ===== ЗАПУСК POLLING =====
     try:
         await dp.start_polling(bot)
     except TelegramNetworkError as e:
-        print(f"Ошибка сети в pulling: {e}")
+        logger.warning(f"Ошибка сети в pulling: {e}")
     except Exception as e:
-        print(f"Критическая ошибка polling: {e}")
+        logger.critical(f"Критическая ошибка polling: {e}")
+
 
 if __name__ == "__main__":
     # Запускаем асинхронную функцию
     try:
         asyncio.run(main())
     except TelegramNetworkError as e:
-        print(f"Ошибка сети в main: {e}")
+        logger.error(f"Ошибка сети в main: {e}")
