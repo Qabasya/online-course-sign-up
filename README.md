@@ -2,6 +2,7 @@
 
 [![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://python.org)
 [![aiogram](https://img.shields.io/badge/aiogram-3.4+-blue.svg)](https://docs.aiogram.dev/)
+![Aiogram](https://img.shields.io/badge/Aiogram-3.x-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)
 
 Обучающий проект Telegram-бота для записи на курсы программирования. Мини-проект к теме 25
 
