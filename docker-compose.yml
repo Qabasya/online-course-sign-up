@@ -1,13 +1,17 @@
 version: '3.8'                  # 1. Версия формата файла
+
+volumes:
+  logs_data:
+  db_data:
+
 services:                       # 2. Список всех приложений (сервисов)
   bot:                          # 3. Имя конкретного сервиса
     build: .                    # 4. Где брать исходники для сборки
-    user: "1000:1003"
     restart: always             # 6. Правило перезапуска
     env_file: .env
-    volumes:                    # 7. Подключение папок (тома)
-      - ./logs:/app/logs
-      - ./db:/app/db
+    volumes:
+      - logs_data:/app/logs
+      - db_data:/app/db
     logging:                    # 8. Настройка логов
       driver: "json-file"
       options:
