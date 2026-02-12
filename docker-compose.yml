@@ -1,12 +1,15 @@
-version: '3.8' # 1. Версия формата файла
-services:      # 2. Список всех приложений (сервисов)
-  bot:         # 3. Имя конкретного сервиса
-    build: .   # 4. Где брать исходники для сборки
-    container_name: tg_bot_live # 5. Имя запущенного контейнера
+version: '3.8'                  # 1. Версия формата файла
+services:                       # 2. Список всех приложений (сервисов)
+  bot:                          # 3. Имя конкретного сервиса
+    build: .                    # 4. Где брать исходники для сборки
+    user: "1000:1003"
     restart: always             # 6. Правило перезапуска
+    env_file: .env
     volumes:                    # 7. Подключение папок (тома)
-      - D:\python\online-course-sign-up\docker-data:/app/data
+      - ./logs:/app/logs
+      - ./db:/app/db
     logging:                    # 8. Настройка логов
       driver: "json-file"
       options:
         max-size: "10mb"
+        max-file: "3"

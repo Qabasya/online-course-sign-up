@@ -1,11 +1,12 @@
 # Работа с базой данных
-import aiosqlite
 import logging
+
+import aiosqlite
 
 # Получаем логгер для базы данных (он будет использовать настройки из секции database в YAML)
 logger = logging.getLogger('database')
 
-DB_NAME = 'sign_up_bot.db'
+DB_NAME = 'clients.db'
 DB_PATH = f'db/{DB_NAME}'
 
 

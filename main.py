@@ -1,5 +1,7 @@
 import asyncio
+import os
 import logging.config
+import pathlib
 
 import yaml
 from aiogram import Bot, Dispatcher
@@ -15,13 +17,36 @@ from handlers.start import router as start_router
 from keyboards.bot_commands import set_main_menu
 from services.database import init_db
 
+
+def prepare_directories(dirs: list[str]):
+    """Создает необходимые папки и проверяет права доступа."""
+    for dir_name in dirs:
+        path = pathlib.Path(__file__).parent / dir_name
+        try:
+            path.mkdir(parents=True, exist_ok=True)
+            # Тест на запись
+            test_file = path / ".write_test"
+            test_file.touch()
+            test_file.unlink()
+        except Exception as e:
+            print(f"Критическая ошибка: нет прав на папку {dir_name}. Ошибка: {e}")
+
+# Список папок, которые нужны боту для работы
+REQUIRED_DIRS = ["logs", "db"]
+prepare_directories(REQUIRED_DIRS)
+
+# Теперь загружаем логи, когда папка 'logs' точно есть
 with open('logging_config.yaml', 'rt') as f:
     config = yaml.safe_load(f.read())
 
 logging.config.dictConfig(config)
-
 logger = logging.getLogger(__name__)
 logger.info('Бот запускается...')
+
+#Debug
+logger.warning('Тест warning')
+logger.error('Тест errors')
+logger.critical('Тест critical')
 
 
 async def main():
